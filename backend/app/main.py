@@ -177,14 +177,15 @@ async def fetch_codechef_data(current_user: models.User = Depends(get_current_us
     if not codechef_id:
         raise HTTPException(status_code=400, detail="Codechef ID not set for user")
 
-    url = f"https://codechef-api.vercel.app/handle/{codechef_id}"
+    url = f"http://localhost:8800/handle/{codechef_id}"
+    # url = f"https://codechef-api.vercel.app/handle/{codechef_id}"
 
     try:
         async with httpx.AsyncClient() as client:
             response = await client.get(url)
             response.raise_for_status()
             data = response.json()
-            data["heatMap"] = []  # Set heatMap to an empty list
+            # data["heatMap"] =  # Set heatMap to an empty list
             return data
     except httpx.HTTPStatusError as exc:
         raise HTTPException(status_code=exc.response.status_code, detail=f"Error fetching CodeChef data: {exc.response.text}")
